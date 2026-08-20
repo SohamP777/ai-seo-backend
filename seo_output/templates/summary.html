@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SEO Report - {{.Metadata.Domain}}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            margin: 0; 
+            padding: 30px; 
+            background: #f9fafb;
+            color: #1f2937;
+            line-height: 1.5;
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            background: white; 
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header { 
+            background: {{.PrimaryColor}}; 
+            color: white; 
+            padding: 30px; 
+        }
+        .header h1 { font-size: 28px; margin-bottom: 10px; }
+        .header p { opacity: 0.9; font-size: 16px; }
+        .content { padding: 30px; }
+        .section { margin-bottom: 40px; }
+        .section h2 { 
+            font-size: 22px; 
+            margin-bottom: 20px; 
+            padding-bottom: 10px; 
+            border-bottom: 2px solid #e5e7eb; 
+        }
+        .metrics-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; 
+            margin: 20px 0; 
+        }
+        .metric-card { 
+            background: #f9fafb; 
+            padding: 20px; 
+            border-radius: 8px; 
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+        .metric-card h3 { 
+            font-size: 14px; 
+            color: #6b7280; 
+            margin-bottom: 10px; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .metric-card p { 
+            font-size: 32px; 
+            font-weight: bold; 
+            color: {{.PrimaryColor}}; 
+        }
+        .severity-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .severity-card {
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+        }
+        .severity-card.critical { background: #dc2626; }
+        .severity-card.warning { background: #f59e0b; }
+        .severity-card.info { background: #3b82f6; }
+        .severity-card h3 { font-size: 16px; margin-bottom: 10px; opacity: 0.9; }
+        .severity-card p { font-size: 28px; font-weight: bold; }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 20px 0; 
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        th { 
+            background: {{.PrimaryColor}}; 
+            color: white; 
+            padding: 12px; 
+            text-align: left; 
+            font-weight: 500;
+        }
+        td { 
+            padding: 12px; 
+            border-bottom: 1px solid #e5e7eb; 
+        }
+        tr:last-child td { border-bottom: none; }
+        .critical { color: #dc2626; font-weight: 500; }
+        .warning { color: #f59e0b; font-weight: 500; }
+        .info { color: #3b82f6; font-weight: 500; }
+        .footer { 
+            margin-top: 40px; 
+            padding: 20px 30px;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            font-size: 14px; 
+            color: #6b7280; 
+            text-align: center; 
+        }
+        .summary-box {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid {{.PrimaryColor}};
+            font-family: monospace;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SEO Audit Report</h1>
+            <p>{{.Metadata.Domain}} | Generated: {{.Metadata.GeneratedAt.Format "January 2, 2006 15:04:05"}}</p>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <h2>Executive Summary</h2>
+                <div class="summary-box">{{.Summary}}</div>
+            </div>
+
+            <div class="section">
+                <h2>Key Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>Total Pages</h3>
+                        <p>{{.Metrics.TotalPages}}</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Avg Load Time</h3>
+                        <p>{{printf "%.2f" .Metrics.AvgLoadTime}}s</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Total Words</h3>
+                        <p>{{.Metrics.TotalWords}}</p>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Total Images</h3>
+                        <p>{{.Metrics.TotalImages}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Issues by Severity</h2>
+                <div class="severity-grid">
+                    <div class="severity-card critical">
+                        <h3>Critical</h3>
+                        <p>{{.Metrics.CriticalIssues}}</p>
+                    </div>
+                    <div class="severity-card warning">
+                        <h3>Warnings</h3>
+                        <p>{{.Metrics.WarningIssues}}</p>
+                    </div>
+                    <div class="severity-card info">
+                        <h3>Info</h3>
+                        <p>{{.Metrics.InfoIssues}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>Top Issues</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Severity</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Element</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range .TopIssues}}
+                        <tr>
+                            <td class="{{.Severity}}">{{.Severity}}</td>
+                            <td>{{.Type}}</td>
+                            <td>{{.Description}}</td>
+                            <td><code>{{.Element}}</code></td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="footer">
+            {{.FooterText}} | Generated by SEO Reporting Tool
+        </div>
+    </div>
+</body>
+</html>

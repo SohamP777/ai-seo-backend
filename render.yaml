@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: ai-seo-backend
+    runtime: go
+    buildCommand: go build -o ai-seo-backend
+    startCommand: ./ai-seo-backend
+    envVars:
+      - key: GO_VERSION
+        value: 1.26.1
